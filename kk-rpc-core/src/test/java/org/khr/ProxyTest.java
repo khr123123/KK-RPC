@@ -10,7 +10,7 @@ import org.khr.proxy.ServiceProxyFactory;
  */
 public class ProxyTest {
     @Test
-    public void test() {
+    public void test1() {
         // 获取代理
         UserService userService = ServiceProxyFactory.getMockProxy(UserService.class);
         User user = new User();
@@ -23,6 +23,19 @@ public class ProxyTest {
             System.out.println("user == null");
         }
         long number = userService.getNumber();
+        System.out.println(number);
+    }
+
+    @Test
+    public void test2() {
+        RpcApplication.init();
+        UserService proxy = ServiceProxyFactory.getProxy(UserService.class);
+        User user = new User();
+        user.setName("yupi");
+        // 调用
+        User newUser = proxy.getUser(user);
+        System.out.println(newUser.getName());
+        long number = proxy.getNumber();
         System.out.println(number);
     }
 }
@@ -41,7 +54,7 @@ interface UserService {
      * 新方法 - 获取数字
      */
     default short getNumber() {
-        return 1;
+        return 110;
     }
 }
 

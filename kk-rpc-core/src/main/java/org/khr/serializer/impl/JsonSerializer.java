@@ -1,8 +1,9 @@
-package org.khr.serializer;
+package org.khr.serializer.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.khr.model.RpcRequest;
 import org.khr.model.RpcResponse;
+import org.khr.serializer.Serializer;
 
 import java.io.IOException;
 

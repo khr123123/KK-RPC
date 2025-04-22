@@ -1,4 +1,6 @@
-package org.khr.serializer;
+package org.khr.serializer.impl;
+
+import org.khr.serializer.Serializer;
 
 import java.io.*;
 

@@ -1,14 +1,21 @@
-package org.khr.serializer;
+package org.khr.serializer.impl;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import org.khr.serializer.Serializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
  * Kryo 序列化器
+ * 🚀 特点：
+ * ⚡ 序列化速度快、压缩率高
+ * ✅ 支持复杂对象结构（对象图）
+ * 🎯 支持对象引用和循环引用
+ * 🔄 支持自定义序列化器
+ * 📦 支持 Java 中绝大多数标准类型和集合
  */
 public class KryoSerializer implements Serializer {
     /**

@@ -1,25 +1,21 @@
 package org.khr.proxy;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import io.grpc.LoadBalancer;
+import lombok.extern.slf4j.Slf4j;
 import org.khr.RpcApplication;
-import org.khr.config.RpcConfig;
-import org.khr.constant.RpcConstant;
 import org.khr.model.RpcRequest;
 import org.khr.model.RpcResponse;
 import org.khr.model.ServiceMetaInfo;
+import org.khr.serializer.Serializer;
+import org.khr.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.rmi.registry.Registry;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
+@Slf4j
 public class ServiceProxy implements InvocationHandler {
 
     /**
@@ -31,13 +27,13 @@ public class ServiceProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 //        // 构造请求
-//        String serviceName = method.getDeclaringClass().getName();
-//        RpcRequest rpcRequest = RpcRequest.builder()
-//                .serviceName(serviceName)
-//                .methodName(method.getName())
-//                .parameterTypes(method.getParameterTypes())
-//                .args(args)
-//                .build();
+        String serviceName = method.getDeclaringClass().getName();
+        RpcRequest rpcRequest = RpcRequest.builder()
+                .serviceName(serviceName)
+                .methodName(method.getName())
+                .parameterTypes(method.getParameterTypes())
+                .args(args)
+                .build();
 //
 //        // 从注册中心获取服务提供者请求地址
 //        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
@@ -56,11 +52,12 @@ public class ServiceProxy implements InvocationHandler {
 //        Map<String, Object> requestParams = new HashMap<>();
 //        requestParams.put("methodName", rpcRequest.getMethodName());
 //        ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
-////            // http 请求
-////            // 指定序列化器
-////            Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
-////            byte[] bodyBytes = serializer.serialize(rpcRequest);
-////            RpcResponse rpcResponse = doHttpRequest(selectedServiceMetaInfo, bodyBytes, serializer);
+        // http 请求
+        // 指定序列化器
+        Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
+        log.info("rpc serializer: {}", serializer);
+        byte[] bodyBytes = serializer.serialize(rpcRequest);
+        RpcResponse rpcResponse = this.doHttpRequest(null, bodyBytes);
 //        // rpc 请求
 //        // 使用重试机制
 //        RpcResponse rpcResponse;
@@ -74,8 +71,7 @@ public class ServiceProxy implements InvocationHandler {
 //            TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
 //            rpcResponse = tolerantStrategy.doTolerant(null, e);
 //        }
-//        return rpcResponse.getData();
-        return proxy;
+        return rpcResponse.getData();
     }
 
     /**
@@ -87,16 +83,15 @@ public class ServiceProxy implements InvocationHandler {
      * @throws IOException
      */
     private static RpcResponse doHttpRequest(ServiceMetaInfo selectedServiceMetaInfo, byte[] bodyBytes) throws IOException {
-//        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
-//        // 发送 HTTP 请求
-//        try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
-//                .body(bodyBytes)
-//                .execute()) {
-//            byte[] result = httpResponse.bodyBytes();
-//            // 反序列化
-//            RpcResponse rpcResponse = serializer.deserialize(result, RpcResponse.class);
-//            return rpcResponse;
-//        }
-        return null;
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
+        // 发送 HTTP 请求
+        try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
+                .body(bodyBytes)
+                .execute()) {
+            byte[] result = httpResponse.bodyBytes();
+            // 反序列化
+            RpcResponse rpcResponse = serializer.deserialize(result, RpcResponse.class);
+            return rpcResponse;
+        }
     }
 }

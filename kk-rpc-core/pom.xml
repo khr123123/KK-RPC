@@ -18,12 +18,13 @@
             <artifactId>vertx-core</artifactId>
             <version>4.5.1</version>
         </dependency>
-        <!--   hutool      -->
+        <!--   hutool 包    -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>5.8.16</version>
         </dependency>
+        <!--  Java 的 YAML 解析库    -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -36,11 +37,13 @@
             <version>1.3.12</version>
         </dependency>
         <!-- 序列化 -->
+        <!--  hessian  轻量级的二进制序列化协议，由 Caucho 公司开发     -->
         <dependency>
             <groupId>com.caucho</groupId>
             <artifactId>hessian</artifactId>
             <version>4.0.66</version>
         </dependency>
+        <!--  kryo  高性能的 Java 序列化库，以 速度快、体积小 著称     -->
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>

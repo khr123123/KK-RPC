@@ -49,17 +49,8 @@ public class SpiLoader {
     /**
      * 动态加载的类列表
      */
-    private static final List<Class<?>> LOAD_CLASS_LIST = Arrays.asList(Serializer.class);
+    private static final List<Class<?>> LOAD_CLASS_LIST = List.of(Serializer.class);
 
-    /**
-     * 加载所有类型
-     */
-    public static void loadAll() {
-        log.info("加载所有 SPI");
-        for (Class<?> aClass : LOAD_CLASS_LIST) {
-            load(aClass);
-        }
-    }
 
     /**
      * 获取某个接口的实例
@@ -125,12 +116,19 @@ public class SpiLoader {
             }
         }
         loaderMap.put(loadClass.getName(), keyClassMap);
+        log.info("加载到{}接口类型的实现类{}", loadClass.getName(), keyClassMap);
         return keyClassMap;
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        loadAll();
-        System.out.println(loaderMap);
+    /**
+     * 加载所有类型
+     */
+    public static void loadAll() {
+        log.info("加载所有 SPI");
+        for (Class<?> aClass : LOAD_CLASS_LIST) {
+            load(aClass);
+        }
     }
+
 
 }
