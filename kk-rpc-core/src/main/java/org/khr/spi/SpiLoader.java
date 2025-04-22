@@ -1,22 +1,19 @@
 package org.khr.spi;
 
-import cn.hutool.core.io.resource.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.khr.serializer.Serializer;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * SPI 加载器
- * 自定义实现，支持键值对映射
+ * 自定义实现，支持键值对映射（自动扫描实现类）
  */
 @Slf4j
 public class SpiLoader {
@@ -24,7 +21,7 @@ public class SpiLoader {
     /**
      * 存储已加载的类：接口名 =>（key => 实现类）
      */
-    private static final Map<String, Map<String, Class<?>>> loaderMap = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, Class<?>>> loaderMap = new ConcurrentHashMap<>();
 
     /**
      * 对象实例缓存（避免重复 new），类路径 => 对象实例，单例模式
@@ -32,34 +29,19 @@ public class SpiLoader {
     private static final Map<String, Object> instanceCache = new ConcurrentHashMap<>();
 
     /**
-     * 系统 SPI 目录
-     */
-    private static final String RPC_SYSTEM_SPI_DIR = "META-INF/rpc/system/";
-
-    /**
-     * 用户自定义 SPI 目录
-     */
-    private static final String RPC_CUSTOM_SPI_DIR = "META-INF/rpc/custom/";
-
-    /**
-     * 扫描路径
-     */
-    private static final String[] SCAN_DIRS = new String[]{RPC_SYSTEM_SPI_DIR, RPC_CUSTOM_SPI_DIR};
-
-    /**
      * 动态加载的类列表
      */
     private static final List<Class<?>> LOAD_CLASS_LIST = List.of(Serializer.class);
 
-
     /**
      * 获取某个接口的实例
      *
-     * @param tClass
-     * @param key
-     * @param <T>
-     * @return
+     * @param tClass 接口类
+     * @param key    实现类 key
+     * @param <T>    泛型返回
+     * @return 实例
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getInstance(Class<?> tClass, String key) {
         String tClassName = tClass.getName();
         Map<String, Class<?>> keyClassMap = loaderMap.get(tClassName);
@@ -69,66 +51,60 @@ public class SpiLoader {
         if (!keyClassMap.containsKey(key)) {
             throw new RuntimeException(String.format("SpiLoader 的 %s 不存在 key=%s 的类型", tClassName, key));
         }
-        // 获取到要加载的实现类型
+        // 获取要加载的实现类型
         Class<?> implClass = keyClassMap.get(key);
-        // 从实例缓存中加载指定类型的实例
         String implClassName = implClass.getName();
-        if (!instanceCache.containsKey(implClassName)) {
+        // 实例缓存机制
+        return (T) instanceCache.computeIfAbsent(implClassName, name -> {
             try {
-                instanceCache.put(implClassName, implClass.newInstance());
-            } catch (InstantiationException | IllegalAccessException e) {
-                String errorMsg = String.format("%s 类实例化失败", implClassName);
-                throw new RuntimeException(errorMsg, e);
+                return implClass.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException(String.format("%s 类实例化失败", implClassName), e);
             }
-        }
-        return (T) instanceCache.get(implClassName);
+        });
     }
 
     /**
-     * 加载某个类型
+     * 加载某个接口的所有实现类（自动扫描）
      *
-     * @param loadClass
-     * @throws IOException
+     * @param loadClass 接口类型
+     * @return 实现类集合
      */
-    public static Map<String, Class<?>> load(Class<?> loadClass) {
+    @SuppressWarnings("unchecked")
+    public static Set<Class<?>> load(Class<?> loadClass) {
         log.info("加载类型为 {} 的 SPI", loadClass.getName());
-        // 扫描路径，用户自定义的 SPI 优先级高于系统 SPI
+
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .forPackages("") // 空字符串表示扫描所有包
+                .addClassLoaders(Thread.currentThread().getContextClassLoader())
+        );
+
+        // 获取所有实现类
+        Set<Class<?>> subTypes = reflections.getSubTypesOf((Class<Object>) loadClass);
+
+        // 构造 key => 实现类映射（key 默认用 simpleName 的小写）
         Map<String, Class<?>> keyClassMap = new HashMap<>();
-        for (String scanDir : SCAN_DIRS) {
-            List<URL> resources = ResourceUtil.getResources(scanDir + loadClass.getName());
-            // 读取每个资源文件
-            for (URL resource : resources) {
-                try {
-                    InputStreamReader inputStreamReader = new InputStreamReader(resource.openStream());
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        String[] strArray = line.split("=");
-                        if (strArray.length > 1) {
-                            String key = strArray[0];
-                            String className = strArray[1];
-                            keyClassMap.put(key, Class.forName(className));
-                        }
-                    }
-                } catch (Exception e) {
-                    log.error("spi resource load error", e);
-                }
-            }
+        for (Class<?> implClass : subTypes) {
+            if (implClass.isInterface() || implClass.isAnnotation() || implClass.isEnum()) continue;
+
+            String key = implClass.getSimpleName();
+            // 若 key 已存在，可按需定义覆盖逻辑，这里简单直接覆盖
+            keyClassMap.put(key, implClass);
         }
+
         loaderMap.put(loadClass.getName(), keyClassMap);
-        log.info("加载到{}接口类型的实现类{}", loadClass.getName(), keyClassMap);
-        return keyClassMap;
+        log.info("加载到 {} 接口类型的实现类 {}", loadClass.getName(), keyClassMap.keySet());
+        return subTypes;
     }
 
     /**
-     * 加载所有类型
+     * 加载所有类型（由 LOAD_CLASS_LIST 定义）
      */
     public static void loadAll() {
-        log.info("加载所有 SPI");
+        log.info("加载所有 SPI 类型");
         for (Class<?> aClass : LOAD_CLASS_LIST) {
             load(aClass);
         }
     }
-
 
 }

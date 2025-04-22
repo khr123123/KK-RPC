@@ -1,0 +1,4 @@
+org.khr.serializer.impl.JdkSerializer
+org.khr.serializer.impl.HessianSerializer
+org.khr.serializer.impl.JsonSerializer
+org.khr.serializer.impl.KryoSerializer
