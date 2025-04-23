@@ -17,7 +17,6 @@ public class OrderController {
     //http://localhost:7002/order?product=Apple&quantity=10
     @GetMapping("/order")
     public boolean orderService(String product, int quantity) {
-        boolean b = orderService.placeOrder(product, quantity);
-        return b;
+        return orderService.placeOrder(product, quantity);
     }
 }
