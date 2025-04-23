@@ -8,6 +8,7 @@ import cn.hutool.setting.yaml.YamlUtil;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 配置工具类
@@ -42,17 +43,28 @@ public class ConfigUtils {
             }
             try {
                 T configInstance = tClass.getDeclaredConstructor().newInstance();
-
                 for (Object keyObj : rawMap.keySet()) {
                     String key = keyObj.toString();
                     Object value = rawMap.get(key);
-
                     try {
                         Field field = tClass.getDeclaredField(key);
                         field.setAccessible(true);
-                        Object converted = convertValue(value, field.getType());
-                        field.set(configInstance, converted);
+                        Class<?> fieldType = field.getType();
+
+                        if (isCustomClass(fieldType)) {
+                            // 递归转换嵌套对象
+                            if (value instanceof Map) {
+                                Object nested = parseConfig((Map<?, ?>) value, fieldType); // 递归方法
+                                field.set(configInstance, nested);
+                            }
+                        } else {
+                            // 普通字段直接转换
+                            Object converted = convertValue(value, fieldType);
+                            field.set(configInstance, converted);
+                        }
+
                     } catch (NoSuchFieldException | IllegalAccessException ignoredField) {
+                        // log ignoredField if needed
                     }
                 }
                 return configInstance;
@@ -60,6 +72,48 @@ public class ConfigUtils {
                 throw new RuntimeException("配置绑定失败：" + e.getMessage(), e);
             }
         }
+    }
+
+    /**
+     * 判断是否是自定义的对象类型
+     *
+     * @param clazz
+     * @return
+     */
+    private static boolean isCustomClass(Class<?> clazz) {
+        return !(clazz.isPrimitive() || clazz.getName().startsWith("java."));
+    }
+
+    private static <T> T parseConfig(Map<?, ?> rawMap, Class<T> tClass) throws Exception {
+        T configInstance = tClass.getDeclaredConstructor().newInstance();
+
+        for (Map.Entry<?, ?> entry : rawMap.entrySet()) {
+            String key = entry.getKey().toString();
+            Object value = entry.getValue();
+
+            try {
+                Field field = tClass.getDeclaredField(key);
+                field.setAccessible(true);
+                Class<?> fieldType = field.getType();
+
+                if (isCustomClass(fieldType)) {
+                    if (value instanceof Map) {
+                        // 嵌套 map 结构，递归解析为对象
+                        Object nested = parseConfig((Map<?, ?>) value, fieldType);
+                        field.set(configInstance, nested);
+                    } else {
+                        throw new IllegalArgumentException("嵌套配置字段解析失败，字段名：" + key + "，值类型：" + value.getClass());
+                    }
+                } else {
+                    Object converted = convertValue(value, fieldType);
+                    field.set(configInstance, converted);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException ignored) {
+                // 可选 log ignored
+            }
+        }
+
+        return configInstance;
     }
 
     /**

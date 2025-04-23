@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: org.khr.RegistryTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.047 s <<< FAILURE! -- in org.khr.RegistryTest
+org.khr.RegistryTest -- Time elapsed: 0.047 s <<< ERROR!
+cn.hutool.core.exceptions.UtilException: Scheduler has been started, please stop it first!
+	at cn.hutool.cron.CronUtil.start(CronUtil.java:153)
+	at cn.hutool.cron.CronUtil.start(CronUtil.java:143)
+	at org.khr.registry.impl.EtcdRegistry.heartBeat(EtcdRegistry.java:148)
+	at org.khr.registry.impl.EtcdRegistry.init(EtcdRegistry.java:60)
+	at org.khr.RegistryTest.init(RegistryTest.java:25)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+

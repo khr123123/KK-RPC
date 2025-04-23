@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.khr.RetryStrategyTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.018 s -- in org.khr.RetryStrategyTest

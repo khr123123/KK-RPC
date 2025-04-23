@@ -3,5 +3,20 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/kk-rpc-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/kk-rpc-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/kk-rpc-spring-boot-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/order-service-impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/order-service-interface/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/order-service-interface/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/stock-service-impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/stock-service-interface/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/stock-service-interface/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/src/main/resources" charset="UTF-8" />
   </component>
 </project>

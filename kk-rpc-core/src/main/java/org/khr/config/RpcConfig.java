@@ -1,7 +1,9 @@
 package org.khr.config;
 
 import lombok.Data;
-import org.khr.serializer.SerializerKeys;
+import org.khr.fault.retry.RetryStrategyKeys;
+import org.khr.fault.tolerant.TolerantStrategyKeys;
+import org.khr.loadbalancer.LoadBalancerKeys;
 
 /**
  * RPC 框架全局配置
@@ -34,20 +36,20 @@ public class RpcConfig {
      */
     private String serializer;
 
-//    /**
-//     * 负载均衡器
-//     */
-//    private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
-//
-//    /**
-//     * 重试策略
-//     */
-//    private String retryStrategy = RetryStrategyKeys.NO;
-//
-//    /**
-//     * 容错策略
-//     */
-//    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
+    /**
+     * 负载均衡器
+     */
+    private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
+
+    /**
+     * 重试策略
+     */
+    private String retryStrategy = RetryStrategyKeys.NO;
+
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
 
     /**
      * 模拟调用

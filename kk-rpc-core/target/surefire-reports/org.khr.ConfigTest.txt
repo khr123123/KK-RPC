@@ -1,0 +1,19 @@
+-------------------------------------------------------------------------------
+Test set: org.khr.ConfigTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.678 s <<< FAILURE! -- in org.khr.ConfigTest
+org.khr.ConfigTest.testLoadConfig -- Time elapsed: 0.048 s <<< ERROR!
+cn.hutool.core.io.resource.NoResourceException: Resource of path [application-dev.yml] not exist!
+	at cn.hutool.core.io.resource.ClassPathResource.initUrl(ClassPathResource.java:122)
+	at cn.hutool.core.io.resource.ClassPathResource.<init>(ClassPathResource.java:74)
+	at cn.hutool.core.io.resource.ClassPathResource.<init>(ClassPathResource.java:34)
+	at cn.hutool.core.io.resource.ResourceUtil.getResourceObj(ResourceUtil.java:230)
+	at cn.hutool.core.io.resource.ResourceUtil.getStream(ResourceUtil.java:72)
+	at cn.hutool.setting.yaml.YamlUtil.loadByPath(YamlUtil.java:41)
+	at cn.hutool.setting.yaml.YamlUtil.loadByPath(YamlUtil.java:29)
+	at org.khr.config.ConfigUtils.loadConfig(ConfigUtils.java:39)
+	at org.khr.ConfigTest.testLoadConfig(ConfigTest.java:14)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+

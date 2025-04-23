@@ -1,8 +1,10 @@
 package org.khr;
 
 import lombok.Data;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.khr.proxy.ServiceProxyFactory;
+
+import java.io.Serializable;
 
 /**
  * @author KK
@@ -35,8 +37,6 @@ public class ProxyTest {
         // 调用
         User newUser = proxy.getUser(user);
         System.out.println(newUser.getName());
-        long number = proxy.getNumber();
-        System.out.println(number);
     }
 }
 
@@ -59,6 +59,6 @@ interface UserService {
 }
 
 @Data
-class User {
+class User  implements Serializable {
     private String name;
 }

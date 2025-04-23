@@ -1,0 +1,5 @@
+rpc.name=we22
+rpc.version=55.0
+rpc.serverPort=8081
+rpc.registryConfig.registry=ZooKeeperRegistry
+

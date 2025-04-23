@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: org.khr.ProxyTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.043 s <<< FAILURE! -- in org.khr.ProxyTest
+org.khr.ProxyTest.test2 -- Time elapsed: 0.034 s <<< ERROR!
+cn.hutool.core.exceptions.UtilException: Scheduler has been started, please stop it first!
+	at cn.hutool.cron.CronUtil.start(CronUtil.java:153)
+	at cn.hutool.cron.CronUtil.start(CronUtil.java:143)
+	at org.khr.registry.impl.EtcdRegistry.heartBeat(EtcdRegistry.java:148)
+	at org.khr.registry.impl.EtcdRegistry.init(EtcdRegistry.java:60)
+	at org.khr.RpcApplication.init(RpcApplication.java:59)
+	at org.khr.RpcApplication.init(RpcApplication.java:45)
+	at org.khr.ProxyTest.test2(ProxyTest.java:33)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+

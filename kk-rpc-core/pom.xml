@@ -55,19 +55,19 @@
             <artifactId>reflections</artifactId>
             <version>0.10.2</version>
         </dependency>
-        <!-- 注册中心 -->
+        <!-- 注册中心 etcd: 类似于 Redis，但它是一个分布式的键值对存储系统 -->
         <dependency>
             <groupId>io.etcd</groupId>
             <artifactId>jetcd-core</artifactId>
             <version>0.7.7</version>
         </dependency>
-        <!-- zookeeper -->
+        <!-- zookeeper 高可用的分布式协调服务 常用于服务注册与发现、配置管理、分布式锁-->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-x-discovery</artifactId>
             <version>5.6.0</version>
         </dependency>
-        <!-- https://github.com/rholder/guava-retrying -->
+        <!-- guava-retrying 重试库       -->
         <dependency>
             <groupId>com.github.rholder</groupId>
             <artifactId>guava-retrying</artifactId>
@@ -80,10 +80,11 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
+        <!-- JUnit 5 -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

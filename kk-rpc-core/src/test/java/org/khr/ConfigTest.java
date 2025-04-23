@@ -1,8 +1,8 @@
 package org.khr;
 
-import org.junit.Test;
-import org.khr.config.RpcConfig;
+import org.junit.jupiter.api.Test;
 import org.khr.config.ConfigUtils;
+import org.khr.config.RpcConfig;
 
 /**
  * @author KK

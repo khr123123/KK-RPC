@@ -1,13 +1,17 @@
 package org.khr.model;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.khr.constant.RpcConstant;
 
 /**
  * 服务元信息（注册信息）
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ServiceMetaInfo {
 
     /**
@@ -42,7 +46,7 @@ public class ServiceMetaInfo {
      */
     public String getServiceKey() {
         // 后续可扩展服务分组
-//        return String.format("%s:%s:%s", serviceName, serviceVersion, serviceGroup);
+        //　　return String.format("%s:%s:%s", serviceName, serviceVersion, serviceGroup);
         return String.format("%s:%s", serviceName, serviceVersion);
     }
 
