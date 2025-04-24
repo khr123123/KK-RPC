@@ -76,7 +76,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
      * @param rpcResponse
      * @param serializer
      */
-    void doResponse(HttpServerRequest request, RpcResponse rpcResponse, Serializer serializer) {
+    private void doResponse(HttpServerRequest request, RpcResponse rpcResponse, Serializer serializer) {
         HttpServerResponse httpServerResponse = request.response()
                 .putHeader("content-type", "application/json");
         try {
