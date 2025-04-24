@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.khr.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Service;
 
 /**
  * @author KK
@@ -19,4 +20,5 @@ public class orderserviceimpl {
         boolean b = orderService.placeOrder("Apple", 10);
         System.out.println("b = " + b);
     }
+
 }
