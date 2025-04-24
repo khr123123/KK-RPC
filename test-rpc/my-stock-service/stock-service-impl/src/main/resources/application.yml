@@ -7,4 +7,4 @@ rpc:
   serverPort: 8000
   serializer: JdkSerializer
   registryConfig:
-    registry: EtcdRegistry
+    registry: RedissonRegistry
