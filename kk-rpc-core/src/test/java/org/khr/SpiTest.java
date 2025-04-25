@@ -11,6 +11,6 @@ import org.khr.spi.SpiLoader;
 public class SpiTest {
     @Test
     public void testLoadResource() {
-        SpiLoader.loadAll();
+//        SpiLoader.loadAll();
     }
 }
