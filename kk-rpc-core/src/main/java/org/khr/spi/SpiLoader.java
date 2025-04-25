@@ -1,12 +1,10 @@
 package org.khr.spi;
 
 import lombok.extern.slf4j.Slf4j;
-import org.khr.serializer.Serializer;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,10 +26,6 @@ public class SpiLoader {
      */
     private static final Map<String, Object> instanceCache = new ConcurrentHashMap<>();
 
-    /**
-     * 动态加载的类列表
-     */
-    private static final List<Class<?>> LOAD_CLASS_LIST = List.of(Serializer.class);
 
     /**
      * 获取某个接口的实例
@@ -95,16 +89,6 @@ public class SpiLoader {
         loaderMap.put(loadClass.getName(), keyClassMap);
         log.info("加载到 {} 接口类型的实现类 {}", loadClass.getName(), keyClassMap.keySet());
         return subTypes;
-    }
-
-    /**
-     * 加载所有类型（由 LOAD_CLASS_LIST 定义）
-     */
-    public static void loadAll() {
-        log.info("加载所有 SPI 类型");
-        for (Class<?> aClass : LOAD_CLASS_LIST) {
-            load(aClass);
-        }
     }
 
 }
