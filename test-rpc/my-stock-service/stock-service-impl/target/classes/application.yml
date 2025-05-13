@@ -2,9 +2,9 @@ server:
   port: 7001
 
 rpc:
-  name: khr123123123
+  name: khr
   version: 1.0
   serverPort: 8000
   serializer: JdkSerializer
   registryConfig:
-    registry: RedissonRegistry
+    registry: EtcdRegistry
