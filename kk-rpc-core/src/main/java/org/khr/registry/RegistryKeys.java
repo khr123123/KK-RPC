@@ -6,7 +6,7 @@ package org.khr.registry;
 public interface RegistryKeys {
 
     String ETCD = "EtcdRegistry";
-
     String ZOOKEEPER = "ZooKeeperRegistry";
-
+    String LOCAL = "LocalRegistry";
+    String REDISSON = "RedissonRegistry";
 }
