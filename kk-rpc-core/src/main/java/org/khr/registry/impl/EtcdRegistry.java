@@ -9,6 +9,7 @@ import io.etcd.jetcd.*;
 import io.etcd.jetcd.options.GetOption;
 import io.etcd.jetcd.options.PutOption;
 import io.etcd.jetcd.watch.WatchEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.khr.config.RegistryConfig;
 import org.khr.model.ServiceMetaInfo;
 import org.khr.registry.Registry;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 /**
  * Etcd 注册中心
  */
+@Slf4j
 public class EtcdRegistry implements Registry {
 
     private Client client;
@@ -135,7 +137,8 @@ public class EtcdRegistry implements Registry {
                     ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(value, ServiceMetaInfo.class);
                     register(serviceMetaInfo);
                 } catch (Exception e) {
-//                    throw new RuntimeException(key + "续签失败", e);
+                    log.info(key + "续签失败", e);
+                    // throw new RuntimeException(key + "续签失败", e);
                 }
             }
         });
