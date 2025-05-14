@@ -3,6 +3,7 @@ package org.khr.orderserviceimpl.service.impl;
 
 import org.khr.kkrpcspringbootstarter.annotation.RpcReference;
 import org.khr.service.OrderService;
+import org.khr.service.PaymentService;
 import org.khr.service.StoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +16,18 @@ public class OrderServiceImpl implements OrderService {
 
     @RpcReference
     private StoreService storeService;
+    @RpcReference
+    private PaymentService paymentService;
+
 
     @Override
     public boolean placeOrder(String product, int quantity) {
         log.info("创建订单成功");
         // 调用库存服务扣减库存
-        boolean b = storeService.reduceStock(product, quantity);
-        return b;
+        storeService.reduceStock(product, quantity);
+        log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        paymentService.pay(100.0);
+        return true;
     }
 }

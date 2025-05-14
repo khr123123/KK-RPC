@@ -55,7 +55,7 @@ public class RedissonRegistry implements Registry {
     }
 
     @Override
-    public void register(ServiceMetaInfo serviceMetaInfo) throws Exception {
+    public void register(ServiceMetaInfo serviceMetaInfo) {
         String registerKey = REDIS_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
         String value = JSONUtil.toJsonStr(serviceMetaInfo);
 
@@ -78,9 +78,9 @@ public class RedissonRegistry implements Registry {
     @Override
     public List<ServiceMetaInfo> serviceDiscovery(String serviceKey) {
         // 优先从缓存获取服务
-        List<ServiceMetaInfo> cachedServiceMetaInfoList = registryServiceCache.readCache();
-        if (cachedServiceMetaInfoList != null) {
-            return cachedServiceMetaInfoList;
+        List<ServiceMetaInfo> cached = registryServiceCache.readCache(serviceKey);
+        if (cached != null) {
+            return cached;
         }
 
         // 前缀搜索
@@ -94,7 +94,7 @@ public class RedissonRegistry implements Registry {
                 .collect(Collectors.toList());
 
         // 写入服务缓存
-        registryServiceCache.writeCache(serviceMetaInfoList);
+        registryServiceCache.writeCache(serviceKey, serviceMetaInfoList);
         return serviceMetaInfoList;
     }
 

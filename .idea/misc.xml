@@ -15,6 +15,9 @@
         <option value="$PROJECT_DIR$/test-rpc/pom.xml" />
         <option value="$PROJECT_DIR$/test-rpc/my-order-service/order-service-impl/pom.xml" />
         <option value="$PROJECT_DIR$/test-rpc/my-stock-service/stock-service-impl/pom.xml" />
+        <option value="$PROJECT_DIR$/test-rpc/my-payment-service/pom.xml" />
+        <option value="$PROJECT_DIR$/test-rpc/my-payment-service/order-payment-impl/pom.xml" />
+        <option value="$PROJECT_DIR$/test-rpc/my-payment-service/order-payment-interface/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

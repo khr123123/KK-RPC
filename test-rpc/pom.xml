@@ -12,6 +12,7 @@
     <modules>
         <module>my-order-service</module>
         <module>my-stock-service</module>
+        <module>my-payment-service</module>
     </modules>
 
     <properties>

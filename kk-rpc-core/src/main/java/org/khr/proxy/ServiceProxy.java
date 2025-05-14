@@ -38,10 +38,9 @@ public class ServiceProxy implements InvocationHandler {
      * 调用代理
      *
      * @return
-     * @throws Throwable
      */
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         // 构造请求
         String serviceName = method.getDeclaringClass().getName();
         RpcRequest rpcRequest = RpcRequest.builder()
@@ -66,6 +65,7 @@ public class ServiceProxy implements InvocationHandler {
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("methodName", rpcRequest.getMethodName());
         ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
+        log.info("NetX发送请求: {}", selectedServiceMetaInfo);
         // http 请求
         // 指定序列化器
         Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
@@ -78,7 +78,11 @@ public class ServiceProxy implements InvocationHandler {
         try {
             RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
             rpcResponse = retryStrategy.doRetry(() ->
-                    doTcpRequest(selectedServiceMetaInfo, rpcRequest)
+//                    doTcpRequest(selectedServiceMetaInfo, rpcRequest);
+                    {
+                        byte[] bodyBytes = serializer.serialize(rpcRequest);
+                        return doHttpRequest(selectedServiceMetaInfo, bodyBytes);
+                    }
             );
         } catch (Exception e) {
             // 容错机制

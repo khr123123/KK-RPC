@@ -14,7 +14,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    //http://localhost:7002/order?product=Apple&quantity=10
+    //http://localhost:7003/order?product=Apple&quantity=10
     @GetMapping("/order")
     public boolean orderService(String product, int quantity) {
         return orderService.placeOrder(product, quantity);

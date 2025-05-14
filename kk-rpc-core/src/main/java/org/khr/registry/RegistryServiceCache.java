@@ -1,43 +1,54 @@
 package org.khr.registry;
 
-
 import org.khr.model.ServiceMetaInfo;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 注册中心服务本地缓存
+ * 注册中心服务本地缓存（支持多服务缓存）
  */
 public class RegistryServiceCache {
 
     /**
-     * 服务缓存
+     * 多服务缓存：serviceKey -> 对应的服务列表
      */
-    public List<ServiceMetaInfo> serviceCache;
+    private final Map<String, List<ServiceMetaInfo>> serviceCacheMap = new ConcurrentHashMap<>();
 
     /**
-     * 写缓存
+     * 写入缓存
      *
-     * @param newServiceCache
-     * @return
+     * @param serviceKey      服务键
+     * @param newServiceCache 新的服务缓存列表
      */
-    public void writeCache(List<ServiceMetaInfo> newServiceCache) {
-        this.serviceCache = newServiceCache;
+    public void writeCache(String serviceKey, List<ServiceMetaInfo> newServiceCache) {
+        serviceCacheMap.put(serviceKey, newServiceCache);
     }
 
     /**
-     * 读缓存
+     * 读取缓存
      *
-     * @return
+     * @param serviceKey 服务键
+     * @return 对应的服务缓存列表（可能为 null）
      */
-    public List<ServiceMetaInfo> readCache() {
-        return this.serviceCache;
+    public List<ServiceMetaInfo> readCache(String serviceKey) {
+        return serviceCacheMap.get(serviceKey);
     }
 
     /**
-     * 清空缓存
+     * 清除指定服务的缓存
+     *
+     * @param serviceKey 服务键
      */
-    public void clearCache() {
-        this.serviceCache = null;
+    public void clearCache(String serviceKey) {
+        serviceCacheMap.remove(serviceKey);
+    }
+
+    /**
+     * 清除所有服务的缓存
+     */
+    public void clearAllCache() {
+        serviceCacheMap.clear();
     }
 }

@@ -50,6 +50,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
 
             try {
                 // 获取要调用的服务实现类，通过反射调用
+                LocalRegistry.log();
                 Class<?> implClass = LocalRegistry.get(rpcRequest.getServiceName());
                 Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
                 Constructor<?> constructor = implClass.getDeclaredConstructor();

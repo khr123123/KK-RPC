@@ -11,6 +11,10 @@
     <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/order-service-interface/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-rpc/my-order-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-payment-service/order-payment-impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-payment-service/order-payment-interface/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-payment-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-rpc/my-payment-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-rpc/my-stock-service/stock-service-impl/src/main/java" charset="UTF-8" />

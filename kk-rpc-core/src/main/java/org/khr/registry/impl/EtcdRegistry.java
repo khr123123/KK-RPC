@@ -91,9 +91,9 @@ public class EtcdRegistry implements Registry {
     @Override
     public List<ServiceMetaInfo> serviceDiscovery(String serviceKey) {
         // 优先从缓存获取服务
-        List<ServiceMetaInfo> cachedServiceMetaInfoList = registryServiceCache.readCache();
-        if (cachedServiceMetaInfoList != null) {
-            return cachedServiceMetaInfoList;
+        List<ServiceMetaInfo> cached = registryServiceCache.readCache(serviceKey);
+        if (cached != null) {
+            return cached;
         }
         // 前缀搜索，结尾一定要加 '/'
         String searchPrefix = ETCD_ROOT_PATH + serviceKey + "/";
@@ -110,7 +110,7 @@ public class EtcdRegistry implements Registry {
                 return JSONUtil.toBean(value, ServiceMetaInfo.class);
             }).collect(Collectors.toList());
             // 写入服务缓存
-            registryServiceCache.writeCache(serviceMetaInfoList);
+            registryServiceCache.writeCache(serviceKey, serviceMetaInfoList);
             return serviceMetaInfoList;
         } catch (Exception e) {
             throw new RuntimeException("获取服务列表失败", e);
@@ -135,7 +135,7 @@ public class EtcdRegistry implements Registry {
                     ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(value, ServiceMetaInfo.class);
                     register(serviceMetaInfo);
                 } catch (Exception e) {
-                    throw new RuntimeException(key + "续签失败", e);
+//                    throw new RuntimeException(key + "续签失败", e);
                 }
             }
         });
@@ -161,7 +161,7 @@ public class EtcdRegistry implements Registry {
                         // key 删除时触发
                         case DELETE:
                             // 清理注册服务缓存
-                            registryServiceCache.clearCache();
+                            registryServiceCache.clearCache(serviceNodeKey);
                             break;
                         case PUT:
                         default:

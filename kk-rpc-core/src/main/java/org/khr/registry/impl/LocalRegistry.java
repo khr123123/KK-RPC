@@ -1,17 +1,24 @@
 package org.khr.registry.impl;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 本地注册中心
  */
+@Slf4j
 public class LocalRegistry {
 
     /**
      * 注册信息存储
      */
     private static final Map<String, Class<?>> map = new ConcurrentHashMap<>();
+
+    public static void log() {
+        log.info("LocalRegistry..{}", map);
+    }
 
     /**
      * 注册服务

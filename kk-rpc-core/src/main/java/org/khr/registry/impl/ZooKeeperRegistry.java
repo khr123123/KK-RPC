@@ -98,7 +98,7 @@ public class ZooKeeperRegistry implements Registry {
     @Override
     public List<ServiceMetaInfo> serviceDiscovery(String serviceKey) {
         // 优先从缓存获取服务
-        List<ServiceMetaInfo> cachedServiceMetaInfoList = registryServiceCache.readCache();
+        List<ServiceMetaInfo> cachedServiceMetaInfoList = registryServiceCache.readCache(serviceKey);
         if (cachedServiceMetaInfoList != null) {
             return cachedServiceMetaInfoList;
         }
@@ -111,7 +111,7 @@ public class ZooKeeperRegistry implements Registry {
             List<ServiceMetaInfo> serviceMetaInfoList = serviceInstanceList.stream().map(ServiceInstance::getPayload).collect(Collectors.toList());
 
             // 写入服务缓存
-            registryServiceCache.writeCache(serviceMetaInfoList);
+            registryServiceCache.writeCache(serviceKey, serviceMetaInfoList);
             return serviceMetaInfoList;
         } catch (Exception e) {
             throw new RuntimeException("获取服务列表失败", e);
@@ -135,7 +135,10 @@ public class ZooKeeperRegistry implements Registry {
         if (newWatch) {
             CuratorCache curatorCache = CuratorCache.build(client, watchKey);
             curatorCache.start();
-            curatorCache.listenable().addListener(CuratorCacheListener.builder().forDeletes(childData -> registryServiceCache.clearCache()).forChanges(((oldNode, node) -> registryServiceCache.clearCache())).build());
+            curatorCache.listenable().addListener(CuratorCacheListener.builder().forDeletes(childData ->
+                    registryServiceCache.clearCache(serviceNodeKey))
+                    .forChanges(((oldNode, node) ->
+                            registryServiceCache.clearCache(serviceNodeKey))).build());
         }
     }
 

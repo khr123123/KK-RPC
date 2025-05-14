@@ -13,6 +13,8 @@
         <module name="stock-service-impl" />
         <module name="kk-rpc-spring-boot-starter" />
         <module name="kk-rpc-core" />
+        <module name="order-payment-impl" />
+        <module name="order-payment-interface" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -23,6 +25,9 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="kk-rpc-spring-boot-starter" options="-parameters" />
+      <module name="my-payment-service" options="" />
+      <module name="order-payment-impl" options="-parameters" />
+      <module name="order-payment-interface" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="order-service-impl" options="-parameters" />
       <module name="stock-service-impl" options="-parameters" />

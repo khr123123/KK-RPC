@@ -3,6 +3,7 @@ package org.khr.server.tcp;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetSocket;
+import lombok.extern.slf4j.Slf4j;
 import org.khr.model.RpcRequest;
 import org.khr.model.RpcResponse;
 import org.khr.protocol.*;
@@ -14,6 +15,7 @@ import java.lang.reflect.Method;
 /**
  * TCP 请求处理器
  */
+@Slf4j
 public class TcpServerHandler implements Handler<NetSocket> {
 
     /**
@@ -38,6 +40,7 @@ public class TcpServerHandler implements Handler<NetSocket> {
             // 构造响应结果对象
             RpcResponse rpcResponse = new RpcResponse();
             try {
+                LocalRegistry.log();
                 // 获取要调用的服务实现类，通过反射调用
                 Class<?> implClass = LocalRegistry.get(rpcRequest.getServiceName());
                 Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
