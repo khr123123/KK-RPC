@@ -7,3 +7,25 @@ rpc:
   serializer: JdkSerializer
   registryConfig:
     registry: RedissonRegistry
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC
+    username: root
+    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+seata:
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 47.117.123.182:8848
+      namespace: ""
+      group: SEATA_GROUP
+      application: seata-server
+      username: nacos
+      password: nacos
+  tx-service-group: seata-demo
+  service:
+    vgroup-mapping:
+      seata-demo: default
