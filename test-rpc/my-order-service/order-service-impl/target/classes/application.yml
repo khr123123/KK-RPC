@@ -23,9 +23,8 @@ seata:
       namespace: ""
       group: SEATA_GROUP
       application: seata-server
-      username: nacos
-      password: nacos
   tx-service-group: seata-demo
   service:
     vgroup-mapping:
       seata-demo: default
+  data-source-proxy-mode: AT
