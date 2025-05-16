@@ -6,7 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component  // InitializingBean -----> Spring 完成 Bean 的依赖注入之后
 public class VertxServerStarter implements InitializingBean {
 
     @Autowired

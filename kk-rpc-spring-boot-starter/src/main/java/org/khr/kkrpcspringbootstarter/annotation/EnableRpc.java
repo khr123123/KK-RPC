@@ -20,8 +20,6 @@ public @interface EnableRpc {
 
     /**
      * 需要启动 server
-     *
-     * @return
      */
     boolean needServer() default true;
 }

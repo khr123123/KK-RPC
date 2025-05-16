@@ -26,19 +26,24 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    @GlobalTransactional
+    @GlobalTransactional(name = "order", rollbackFor = Exception.class)
     public boolean placeOrder(String product, int quantity) {
         log.info("创建订单......");
         orderMapper.insertOrder(product, quantity);
         log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+
         log.info("减库存....");
         storeService.reduceStock(product, quantity);
         log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+        String a = null;
+        a.toLowerCase();
+
+
         log.info("付款....");
-        int i = 1 / 0;
-        System.out.println("i = " + i);
         paymentService.pay(100.0);
         log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");

@@ -1,22 +1,17 @@
 package org.khr.kkrpcspringbootstarter.bootstrap;
 
-import io.vertx.core.Vertx;
 import org.khr.RpcApplication;
 import org.khr.config.RpcConfig;
 import org.khr.kkrpcspringbootstarter.annotation.EnableRpc;
-import org.khr.kkrpcspringbootstarter.handel.HttpServerSpringHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * Rpc 框架启动    Spring 初始化时执行
+ * Rpc 框架启动    Spring 初始化时执行  (执行实际最早  开工前设计图纸和布置工地)
  */
 public class RpcInitBootstrap implements ImportBeanDefinitionRegistrar {
 
-    @Autowired
-    private HttpServerSpringHandler httpServerSpringHandler;
 
     /**
      * Spring 初始化时执行，初始化 RPC 框架
