@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="kk-prc-globalTX-server" />
         <module name="order-service-interface" />
         <module name="stock-service-interface" />
         <module name="order-service-impl" />
@@ -18,20 +19,18 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="order-service" target="17" />
-      <module name="store-service" target="17" />
+      <module name="kk-rpc-global-tx" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="kk-rpc-global-tx" options="-parameters" />
       <module name="kk-rpc-spring-boot-starter" options="-parameters" />
       <module name="my-payment-service" options="" />
       <module name="order-payment-impl" options="-parameters" />
       <module name="order-payment-interface" options="-parameters" />
-      <module name="order-service" options="-parameters" />
       <module name="order-service-impl" options="-parameters" />
       <module name="stock-service-impl" options="-parameters" />
-      <module name="store-service" options="-parameters" />
     </option>
   </component>
 </project>

@@ -11,12 +11,13 @@ import org.khr.registry.RegistryFactory;
 import org.khr.registry.impl.LocalRegistry;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.PriorityOrdered;
 
 /**
  * Rpc 服务提供者启动    Bean 初始化后执行的方法。此方法在 Spring 完成某个 Bean 的初始化之后被自动调用。
  */
 @Slf4j
-public class RpcProviderBootstrap implements BeanPostProcessor {
+public class RpcProviderBootstrap implements BeanPostProcessor, PriorityOrdered {
 
     /**
      * Bean 初始化后执行，注册服务
@@ -56,11 +57,17 @@ public class RpcProviderBootstrap implements BeanPostProcessor {
             serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
             try {
                 registry.register(serviceMetaInfo);
+                log.info("{},服务注册成功.....", beanClass);
             } catch (Exception e) {
                 throw new RuntimeException(serviceName + " 服务注册失败", e);
             }
         }
 
         return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
+    }
+
+    @Override
+    public int getOrder() {
+        return 99;
     }
 }

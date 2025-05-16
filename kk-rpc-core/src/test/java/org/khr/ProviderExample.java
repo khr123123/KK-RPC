@@ -11,7 +11,6 @@ import org.khr.registry.Registry;
 import org.khr.registry.RegistryFactory;
 import org.khr.registry.impl.LocalRegistry;
 import org.khr.server.HttpServer;
-import org.khr.server.http.VertxHttpServer;
 import org.khr.server.tcp.VertxTcpServer;
 
 import java.util.ArrayList;
@@ -45,6 +44,7 @@ public class ProviderExample {
         HttpServer httpServer = new VertxTcpServer();
         httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
     }
+
     @Test
     public void test() {
         // 要注册的服务

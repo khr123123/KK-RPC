@@ -10,10 +10,15 @@ rpc:
     registry: RedissonRegistry
 
 spring:
+  application:
+    name: payment-service
   datasource:
     url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC
     username: root
     password: admin123
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+

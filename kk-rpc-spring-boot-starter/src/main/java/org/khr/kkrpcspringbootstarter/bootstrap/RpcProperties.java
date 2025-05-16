@@ -18,14 +18,21 @@ public class RpcProperties {
     private String retryStrategy;
     private String tolerantStrategy;
     private boolean mock = false;
-    private RegistryConfig registryConfig;
+    private boolean needServer = true;
+    private RegistryConfig registryConfig = new RegistryConfig();
+    private GlobalTXConfig globalTXConfig = new GlobalTXConfig();
 
     @Data
-    static class RegistryConfig {
+    public static class RegistryConfig {
         private String registry;
         private String address = "http://localhost:2379";
         private String username;
         private String password;
         private Long timeout = 10000L;
+    }
+
+    @Data
+    public static class GlobalTXConfig {
+        private boolean enableGlobalTX = true;
     }
 }

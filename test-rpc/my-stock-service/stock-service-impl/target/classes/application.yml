@@ -16,5 +16,25 @@ spring:
     username: root
     password: admin123
     driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.117.123.182:8848
+  application:
+    name: stock-service
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+seata:
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 47.117.123.182:8848
+      namespace: ""
+      group: SEATA_GROUP
+      application: seata-server
+  tx-service-group: seata-demo
+  service:
+    vgroup-mapping:
+      seata-demo: default
+  data-source-proxy-mode: AT

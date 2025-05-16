@@ -5,22 +5,18 @@ import org.khr.kkrpcspringbootstarter.annotation.RpcReference;
 import org.khr.proxy.ServiceProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.PriorityOrdered;
 
 import java.lang.reflect.Field;
 
 /**
- * Rpc 服务消费者启动     Bean 初始化后执行的方法。此方法在 Spring 完成某个 Bean 的初始化之后被自动调用。
+ * Rpc 服务消费者启动    Spring完成Bean初始化前后，对 Bean 进行增强、替换或包装。
  */
 @Slf4j
-public class RpcConsumerBootstrap implements BeanPostProcessor {
+public class RpcConsumerBootstrap implements BeanPostProcessor, PriorityOrdered {
 
     /**
      * Bean 初始化后执行，注入服务
-     *
-     * @param bean
-     * @param beanName
-     * @return
-     * @throws BeansException
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -49,4 +45,8 @@ public class RpcConsumerBootstrap implements BeanPostProcessor {
         return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
     }
 
+    @Override
+    public int getOrder() {
+        return 100;  // 确保晚于 Seata
+    }
 }

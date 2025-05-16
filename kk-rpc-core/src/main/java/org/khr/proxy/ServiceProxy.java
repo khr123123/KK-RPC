@@ -20,6 +20,7 @@ import org.khr.registry.Registry;
 import org.khr.registry.RegistryFactory;
 import org.khr.serializer.Serializer;
 import org.khr.serializer.SerializerFactory;
+import org.khr.server.HttpHeadContext;
 import org.khr.server.tcp.VertxTcpClient;
 
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class ServiceProxy implements InvocationHandler {
         Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
         log.info("rpc serializer: {}", serializer);
         // byte[] bodyBytes = serializer.serialize(rpcRequest);
-        //RpcResponse rpcResponse = this.doHttpRequest(serviceMetaInfo1, bodyBytes);
+        // RpcResponse rpcResponse = this.doHttpRequest(serviceMetaInfo1, bodyBytes);
         RpcResponse rpcResponse;
         // rpc 请求
         // 使用重试机制
@@ -120,6 +121,7 @@ public class ServiceProxy implements InvocationHandler {
         // 发送 HTTP 请求
         try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
                 .body(bodyBytes)
+                .addHeaders(HttpHeadContext.getAll())  // 获取上下文中的 headers
                 .execute()) {
             byte[] result = httpResponse.bodyBytes();
             // 反序列化
